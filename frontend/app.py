@@ -1,36 +1,43 @@
 from flask import Flask, render_template
 import os
-import MySQLdb
-from prometheus_flask_exporter import PrometheusMetrics
+# from prometheus_flask_exporter import PrometheusMetrics
 import requests
+from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__, static_url_path='/static')
 
-metrics = PrometheusMetrics(app)
+# metrics = PrometheusMetrics(app)
 
-def connection():
-    conn = MySQLdb.connect(host=os.getenv('mysql_host'),
-                           user=os.getenv('mysql_user'),
-                           passwd=os.getenv('mysql_password'),
-                           db = os.getenv('mysql_db'),
-                           charset='utf8')
-    c = conn.cursor()
-    return c, conn
+app.config['SQLALCHEMY_DATABASE_URI'] = "mysql://myuser:mypassword@172.22.0.2/mydatabase"
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+db = SQLAlchemy(app)
+
+class itunes_data(db.Model):
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    kind = db.Column(db.String(255), nullable=False)
+    collectionName = db.Column(db.String(255), nullable=False)
+    trackName = db.Column(db.String(255), nullable=False)
+    collectionPrice = db.Column(db.Float)
+    trackPrice = db.Column(db.Float)
+    primaryGenreName = db.Column(db.String(255), nullable=False)
+    trackCount = db.Column(db.Integer)
+    trackNumber = db.Column(db.Integer)
+    # releaseDate = db.Column(db.DateTime)
+    releaseDate = db.Column(db.String(255), nullable=False)
+    def __repr__(self):
+        return '<itines_data %r>' % self.trackName
+
 
 @app.route('/')
 def index():
     try:
-        c, conn = connection()
-        query = "SELECT date, ValuteID, NumCode, CharCode, Nominal, Name, Value from cbr WHERE MONTH(date) = MONTH(CURRENT_DATE())AND YEAR(date) = YEAR(CURRENT_DATE()) ORDER BY name ASC, date ASC;"
-        c.execute(query)
-        data = c.fetchall()
-        conn.close()
+        data = itunes_data.query.order_by(itunes_data.collectionName).all()
         return render_template("index.html", data=data)
         return data
     except Exception as e:
         return (str(e))
 
 @app.route('/update', methods=['GET'])
-def update_be():
-    response = requests.get(os.getenv('be-url'))
+def update():
+    response = requests.get(os.getenv('app:5000/api/update'))
     return "ok"

@@ -44,21 +44,28 @@ $.ajax({
 <table  class="table table-responsive mt-4">
   <thead class="thead-dark">
     <tr>
-		<th>Дата</th>
-		<th>ID Валюты</th>
-		<th>№ Валюты</th>
-		<th>Код</th>
-		<th>Кол-во</th>
-		<th>Валюта</th>
-		<th>Курс</th>
-    </tr>
+		<th>kind</th>
+		<th>collectionName</th>
+		<th>trackName</th>
+		<th>collectionPrice</th>
+		<th>trackPrice</th>
+		<th>primaryGenreName</th>
+		<th>trackCount</th>
+    <th>trackNumber</th>
+    <th>releaseDate</th>
   </thead>
   <tbody>  
     {% for row in data %}
         <tr>
-        {% for d in row %}
-            <td>{{ d }}</td>
-        {% endfor %}
+            <td>{{ row.kind }}</td>
+            <td>{{ row.collectionName }}</td>
+            <td>{{ row.trackName }}</td>
+            <td>{{ row.collectionPrice }}</td>
+            <td>{{ row.trackPrice }}</td>
+            <td>{{ row.primaryGenreName }}</td>
+            <td>{{ row.trackCount }}</td>
+            <td>{{ row.trackNumber }}</td>
+            <td>{{ row.releaseDate }}</td>
         </tr>
     {% endfor %}
   </tbody>

@@ -1,5 +1,6 @@
 requests==2.25.1
 flask==2.0.2
+flask_sqlalchemy==2.5.1
 prometheus_flask_exporter==0.18.7
 mysql-connector-python==8.0.28
 mysqlclient==1.4.4
