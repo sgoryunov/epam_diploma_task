@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cbr-backend
+spec:
+  selector:
+    matchLabels:
+      app: cbr-backend
+  template:
+    metadata:
+      labels:
+        app: cbr-backend
+    spec:
+      containers:
+      - name: cloud-sql-proxy
+        command:
+          - "/cloud_sql_proxy"
+          - "-instances=cbr-grabber:europe-west3:dev-instance=tcp:3306"
+          - "-credential_file=/secrets/service_account.json"
+        securityContext:
+          runAsNonRoot: true
+        volumeMounts:
+        - name: sa-key-volume
+          mountPath: /secrets/
+          readOnly: true
+        resources:
+          requests:
+            memory: "128Mi"
+            cpu:    "100m"
+      volumes:
+      - name: sa-key-volume
+        secret:
+          secretName: sa-key

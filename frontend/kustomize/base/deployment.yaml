@@ -1,0 +1,85 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cbr-frontend
+  labels:
+    owner : Nikolai_Voloshin
+spec:
+  selector:
+    matchLabels:
+      app: cbr-frontend
+  template:
+    metadata:
+      labels:
+        app: cbr-frontend
+    spec:
+      containers:
+      - name: cbr-frontend
+        image: gcr.io/cbr-grabber/cbr-frontend-staging:latest
+        livenessProbe:
+          httpGet:
+           path: /
+           port: 80
+          initialDelaySeconds: 5
+          timeoutSeconds: 2
+          periodSeconds: 10
+          failureThreshold: 3
+        ports:
+          - containerPort: 80
+        resources:
+          requests:
+            memory: "128Mi"
+            cpu: "50m"
+          limits:
+            memory: "512Mi"
+            cpu: "200m"
+        env:
+        - name: mysql_user
+          valueFrom:
+            secretKeyRef:
+              name: mysql-user
+              key: MYSQL_USER
+        - name: mysql_password
+          valueFrom:
+            secretKeyRef:
+              name: mysql-password
+              key: MYSQL_PASSWORD
+        - name: mysql_host
+          valueFrom:
+            secretKeyRef:
+              name: mysql-dbhost
+              key: MYSQL_DBHOST
+        - name: mysql_db
+          valueFrom:
+            secretKeyRef:
+              name: mysql-db
+              key: MYSQL_DB
+        - name: be-url
+          valueFrom:
+            secretKeyRef:
+              name: be-url
+              key: be-url
+
+      - name: cloud-sql-proxy
+        image: gcr.io/cloudsql-docker/gce-proxy:latest
+        command:
+          - "/cloud_sql_proxy"
+          - "-instances=cbr-grabber:europe-west3:staging-instance=tcp:3306"
+          - "-credential_file=/secrets/service_account.json"
+        securityContext:
+          runAsNonRoot: true
+        volumeMounts:
+        - name: sa-key-volume
+          mountPath: /secrets/
+          readOnly: true
+        resources:
+          requests:
+            memory: "128Mi"
+            cpu:    "50m"
+          limits:
+            memory: "256Mi"
+            cpu:    "100m"
+      volumes:
+      - name: sa-key-volume
+        secret:
+          secretName: sa-key

@@ -1,0 +1,8 @@
+bases:
+  - ../../base/
+namePrefix: production-
+namespace: production
+
+patches:
+ - ingress-patch.yaml
+ - deployment-patch.yaml

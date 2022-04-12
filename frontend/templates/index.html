@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="/static/css/style.css">
+  <title>Курс Валют ЦБР</title>
+ </head>
+<body>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script type=text/javascript>
+        $(function() {
+          $('#refresh_button').bind('click', function() {
+          $('#refresh_button').text('Идёт обновление базы, подождите. Это занимает примерно 10-20 сек');
+          $('#refresh_button').attr('disabled','disabled');
+
+$.ajax({
+                url: '/update',
+                async: true,
+                type: "get",
+                success: function(data){
+                    alert("Данные обновлены!");
+                   location.reload();
+                }
+            });
+            return false;
+          });
+        });
+</script>
+
+</div>
+<div class="contraiter">
+ <div class="row">
+   <div class="col-12 col-sm-8 mx-auto">
+
+        <button class="btn btn-dark mt-4" id='refresh_button'>Обновить данные</button>
+
+
+<table  class="table table-responsive mt-4">
+  <thead class="thead-dark">
+    <tr>
+		<th>Дата</th>
+		<th>ID Валюты</th>
+		<th>№ Валюты</th>
+		<th>Код</th>
+		<th>Кол-во</th>
+		<th>Валюта</th>
+		<th>Курс</th>
+    </tr>
+  </thead>
+  <tbody>  
+    {% for row in data %}
+        <tr>
+        {% for d in row %}
+            <td>{{ d }}</td>
+        {% endfor %}
+        </tr>
+    {% endfor %}
+  </tbody>
+</table>
+  </div>
+ </div>
+</div>
