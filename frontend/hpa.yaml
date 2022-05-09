@@ -1,0 +1,19 @@
+apiVersion: autoscaling/v2beta1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: cbr-frontend
+  labels:
+    name : cbr-frontend
+    owner : Semyon_Goryunov
+spec:
+    scaleTargetRef:
+      apiVersion: apps/v2beta1
+      kind: Deployment
+      name: cbr-frontend
+    minReplicas: 1
+    maxReplicas: 4
+    metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        targetAverageUtilization: 50

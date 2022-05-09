@@ -15,7 +15,7 @@ services:
     image: sgoryunov/frontend
     container_name: frontend
     ports:
-      - 80:5000
+      - 8080:5000
     depends_on:
       - backend
   db:
@@ -27,4 +27,4 @@ services:
       - MYSQL_DATABASE=mydatabase
       - MYSQL_USER=myuser
       - MYSQL_PASSWORD=mypassword
-    
+     

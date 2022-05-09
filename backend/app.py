@@ -29,7 +29,7 @@ class itunes_data(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     kind = db.Column(db.String(255), nullable=False)
     collectionName = db.Column(db.String(255), nullable=False)
-    trackName = db.Column(db.String(255),unique=True,nullable=False)
+    trackName = db.Column(db.String(255),nullable=False)
     collectionPrice = db.Column(db.Float)
     trackPrice = db.Column(db.Float)
     primaryGenreName = db.Column(db.String(255), nullable=False)
@@ -53,6 +53,8 @@ def update_db():
     if response.status_code != 200:
         app.logger.info('%s -- status code from itunes', response.status_code)
         return response.status_code
+    # itunes_data.id.cl
+    # itunes_data.query.delete()
     for x in response.json()['results']:
         if x['wrapperType']=='track':
             var = itunes_data(kind = x['kind'],
@@ -65,7 +67,9 @@ def update_db():
                             trackNumber = x['trackNumber'],
                             # releaseDate = datetime.strptime(x['releaseDate'], '%y-%m-%d"T"%H:%M:%S"Z"'))
                             releaseDate = x['releaseDate'])
-            req = itunes_data.query.filter_by(trackName = var.trackName, collectionName = var.collectionName).first()
+            req = itunes_data.query.filter_by(trackName = var.trackName, 
+                                            collectionName = var.collectionName,
+                                            primaryGenreName = var.primaryGenreName).first()
             if req == None:
                 db.session.add(var)
             else:

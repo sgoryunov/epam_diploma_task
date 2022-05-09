@@ -1,0 +1,19 @@
+apiVersion: autoscaling/v2beta1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: itunes-gr_backend
+  labels:
+    name : itunes-gr_backend
+    owner : Semyon_Goryunov
+spec:
+    scaleTargetRef:
+      apiVersion: apps/v2beta1
+      kind: Deployment
+      name: itunes-gr_backend
+    minReplicas: 1
+    maxReplicas: 3
+    metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        targetAverageUtilization: 50
