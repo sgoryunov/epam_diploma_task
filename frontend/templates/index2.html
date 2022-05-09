@@ -1,22 +1,16 @@
 <!doctype html>
-<html lang="en">
-  <head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <link rel="stylesheet" type="text/css" href="/static/css/style.css">
-  <title>Курс Валют ЦБР</title>
- </head>
+<style>
+    table, th, td {
+      border:1px solid black;
+    }
+    </style>
 <body>
-
+<h1 >Itunes data shipper</h1>
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 <script type=text/javascript>
         $(function() {
           $('#refresh_button').bind('click', function() {
-          $('#refresh_button').text('Идёт обновление базы, подождите. Это занимает примерно 10-20 сек');
+          $('#refresh_button').text('Data is updating...');
           $('#refresh_button').attr('disabled','disabled');
 
 $.ajax({
@@ -24,7 +18,7 @@ $.ajax({
                 async: true,
                 type: "get",
                 success: function(data){
-                    alert("Данные обновлены!");
+                    alert("Updated");
                    location.reload();
                 }
             });
@@ -38,21 +32,21 @@ $.ajax({
  <div class="row">
    <div class="col-12 col-sm-8 mx-auto">
 
-        <button class="btn btn-dark mt-4" id='refresh_button'>Обновить данные</button>
+        <button class="btn btn-dark mt-4" id='refresh_button'>Update data</button>
 
-
-<table  class="table table-responsive mt-4">
-  <thead class="thead-dark">
+<table style="width:100%">
+  <Caption style="font-size: xx-large;"> The Beatles music from itunes</Caption>
+  <thead >
     <tr>
-		<th>kind</th>
-		<th>collectionName</th>
-		<th>trackName</th>
-		<th>collectionPrice</th>
-		<th>trackPrice</th>
-		<th>primaryGenreName</th>
-		<th>trackCount</th>
-    <th>trackNumber</th>
-    <th>releaseDate</th>
+		<th>Kind</th>
+		<th>Collection name</th>
+		<th>Track name</th>
+		<th>Collection price</th>
+		<th>Track price</th>
+		<th>Genre</th>
+		<th>Track count</th>
+    <th>Track number</th>
+    <th>Release date</th>
   </thead>
   <tbody>  
     {% for row in data %}

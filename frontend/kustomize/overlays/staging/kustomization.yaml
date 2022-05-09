@@ -1,8 +1,0 @@
-bases:
-  - ../../base/
-namePrefix: staging-
-namespace: staging
-
-patches:
- - ingress-patch.yaml
- - deployment-patch.yaml

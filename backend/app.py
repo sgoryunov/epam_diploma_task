@@ -10,10 +10,12 @@ from flask_migrate import Migrate
 import os
 
 app = Flask(__name__)
-# load_dotenv('../.env')
+app.logger.debug('Update db')
+
 # metrics = PrometheusMetrics(app)
 
-app.config['SQLALCHEMY_DATABASE_URI'] = "mysql://myuser:mypassword@172.22.0.2/mydatabase"
+
+app.config['SQLALCHEMY_DATABASE_URI'] = "mysql://myuser:mypassword@db/mydatabase"
 # app.config['SQLALCHEMY_DATABASE_URI'] = "mysql://" \
 #     +os.getenv('DB_USER') \
 #     +":"+os.getenv('DB_USER_PASS') \
@@ -27,7 +29,7 @@ class itunes_data(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     kind = db.Column(db.String(255), nullable=False)
     collectionName = db.Column(db.String(255), nullable=False)
-    trackName = db.Column(db.String(255), nullable=False)
+    trackName = db.Column(db.String(255),unique=True,nullable=False)
     collectionPrice = db.Column(db.Float)
     trackPrice = db.Column(db.Float)
     primaryGenreName = db.Column(db.String(255), nullable=False)
@@ -40,13 +42,16 @@ class itunes_data(db.Model):
 
 cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
 
+@app.before_first_request
+def init_db():
+    app.logger.debug('A value for debugging')
+    update_db()
 
 def update_db():
-    import os
-    # import mysql.connector
-    url = 'https://itunes.apple.com/search?term=The+Beatles' 
+    url = 'https://itunes.apple.com/search?term=The+Beatles'
     response = requests.get(url)
     if response.status_code != 200:
+        app.logger.info('%s -- status code from itunes', response.status_code)
         return response.status_code
     for x in response.json()['results']:
         if x['wrapperType']=='track':
@@ -60,7 +65,11 @@ def update_db():
                             trackNumber = x['trackNumber'],
                             # releaseDate = datetime.strptime(x['releaseDate'], '%y-%m-%d"T"%H:%M:%S"Z"'))
                             releaseDate = x['releaseDate'])
-            db.session.add(var)
+            req = itunes_data.query.filter_by(trackName = var.trackName, collectionName = var.collectionName).first()
+            if req == None:
+                db.session.add(var)
+            else:
+                req = var 
     db.session.commit()
 
 
