@@ -1,17 +1,17 @@
 apiVersion: autoscaling/v2beta1
 kind: HorizontalPodAutoscaler
 metadata:
-  name: cbr-frontend
+  name: itunes-gr-frontend
   labels:
-    name : cbr-frontend
+    name : itunes-gr-frontend
     owner : Semyon_Goryunov
 spec:
     scaleTargetRef:
       apiVersion: apps/v2beta1
       kind: Deployment
-      name: cbr-frontend
+      name: itunes-gr-frontend
     minReplicas: 1
-    maxReplicas: 4
+    maxReplicas: 3
     metrics:
     - type: Resource
       resource:

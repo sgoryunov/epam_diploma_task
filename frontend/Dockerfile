@@ -8,6 +8,7 @@ RUN apk add --no-cache gcc musl-dev linux-headers mariadb-connector-c-dev
 COPY ./ ./
 COPY requirements.txt requirements.txt
 RUN pip install -r requirements.txt
+EXPOSE 80
 # RUN chmod +x entrypoint.sh
-CMD ["flask", "run"]
-# ENTRYPOINT ["/app/entrypoint.sh"]
+# CMD ["flask", "run"]
+ENTRYPOINT flask run -p 80

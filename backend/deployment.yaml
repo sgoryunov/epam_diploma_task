@@ -15,15 +15,15 @@ spec:
     spec:
       containers:
       - name: itunes-gr-backend
-        image: sgoryunov/backend
-        # livenessProbe:
-        #   httpGet:
-        #    path: /health
-        #    port: 5000
-        #   initialDelaySeconds: 5
-        #   timeoutSeconds: 2
-        #   periodSeconds: 10
-        #   failureThreshold: 3
+        image: sgoryunov/backend:latest
+        livenessProbe:
+          httpGet:
+           path: /health
+           port: 5000
+          initialDelaySeconds: 5
+          timeoutSeconds: 2
+          periodSeconds: 10
+          failureThreshold: 3
         ports:
           - containerPort: 5000
         resources:

@@ -8,7 +8,8 @@ app = Flask(__name__, static_url_path='/static')
 
 # metrics = PrometheusMetrics(app)
 
-app.config['SQLALCHEMY_DATABASE_URI'] = "mysql://myuser:mypassword@db/mydatabase"
+app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('database_url')
+# app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://myuser:mypassword@db/mydatabase'
 # app.config['SQLALCHEMY_DATABASE_URI'] = "mysql://" \
 #     +os.getenv('DB_USER') \
 #     +":"+os.getenv('DB_USER_PASS') \
@@ -34,7 +35,7 @@ class itunes_data(db.Model):
 
 @app.before_first_request
 def init_db():
-    requests.get('http://backend:5000/api/update')
+    requests.get('http://itunes-gr-backend:5000/api/update')
 
 @app.route('/')
 def index():
@@ -47,5 +48,5 @@ def index():
 
 @app.route('/update', methods=['GET'])
 def update():
-    response = requests.get('http://backend:5000/api/update')
+    response = requests.get('http://itunes-gr-backend:5000/api/update')
     return "ok"

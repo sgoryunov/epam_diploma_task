@@ -1,23 +1,24 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: cbr-frontend
+  name: itunes-gr-frontend
   annotations:
-    kubernetes.io/ingress.class: "nginx"
-    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+    nginx.ingress.kubernetes.io/rewrite-target: /$1
+    # cert-manager.io/cluster-issuer: "letsencrypt-prod"
 spec:
-  tls:
-  - hosts:
-    - homeline.kg
-    secretName: cbr-tls
+  # ingressClassName: nginx
+  # tls:
+  # - hosts:
+  #   - homeline.kg
+  #   secretName: cbr-tls
   rules:
-  - host: homeline.kg
+  - host: nf-100-105.jinr.ru
     http:
       paths:
       - pathType: Prefix
-        path: "/"
+        path: /
         backend:
           service:
-            name: cbr-frontend
+            name: itunes-gr-frontend
             port:
               number: 80

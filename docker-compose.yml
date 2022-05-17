@@ -15,7 +15,7 @@ services:
     image: sgoryunov/frontend
     container_name: frontend
     ports:
-      - 8080:5000
+      - 8080:80
     depends_on:
       - backend
   db:
@@ -23,8 +23,8 @@ services:
     restart: always
     container_name: mysql
     environment:
-      - MARIADB_ROOT_PASSWORD=secret
-      - MYSQL_DATABASE=mydatabase
-      - MYSQL_USER=myuser
-      - MYSQL_PASSWORD=mypassword
+      - MARIADB_ROOT_PASSWORD=DB_ROOT_PASS
+      - MYSQL_DATABASE=DB_NAME
+      - MYSQL_USER=DB_USER
+      - MYSQL_PASSWORD=DB_USER_PASS
      

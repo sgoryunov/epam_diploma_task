@@ -1,21 +1,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: itunes-gr-front
+  name: itunes-gr-frontend
   labels:
     owner : Semyon_Goryunov
 spec:
   selector:
     matchLabels:
-      app: itunes-gr-front
+      app: itunes-gr-frontend
   template:
     metadata:
       labels:
-        app: itunes-gr-front
+        app: itunes-gr-frontend
     spec:
       containers:
-      - name: itunes-gr-front
-        image: sgoryunov/frontend
+      - name: itunes-gr-frontend
+        image: sgoryunov/frontend:latest
         livenessProbe:
           httpGet:
            path: /

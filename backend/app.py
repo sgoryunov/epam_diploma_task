@@ -15,7 +15,8 @@ app.logger.debug('Update db')
 # metrics = PrometheusMetrics(app)
 
 
-app.config['SQLALCHEMY_DATABASE_URI'] = "mysql://myuser:mypassword@db/mydatabase"
+app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('database_url')
+# app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://myuser:mypassword@db/mydatabase'
 # app.config['SQLALCHEMY_DATABASE_URI'] = "mysql://" \
 #     +os.getenv('DB_USER') \
 #     +":"+os.getenv('DB_USER_PASS') \
