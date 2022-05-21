@@ -32,3 +32,7 @@ output "cluster_name" {
   description = "Kubernetes Cluster Name"
   value       = local.cluster_name
 }
+
+output "db_endpoint" {
+  value = resource.aws_db_instance.my_db.endpoint
+}
