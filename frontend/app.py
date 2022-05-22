@@ -33,9 +33,9 @@ class itunes_data(db.Model):
     def __repr__(self):
         return '<itines_data %r>' % self.trackName
 
-@app.before_first_request
-def init_db():
-    requests.get('http://itunes-gr-backend:5000/api/update')
+# @app.before_first_request
+# def init_db():
+#     requests.get('http://itunes-gr-backend:5000/api/update')
 
 @app.route('/')
 def index():
@@ -50,3 +50,7 @@ def index():
 def update():
     response = requests.get('http://itunes-gr-backend:5000/api/update')
     return "ok"
+
+@app.route('/health')
+def health():
+    return "OK"

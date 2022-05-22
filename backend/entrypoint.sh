@@ -1,5 +1,5 @@
 #!/bin/bash
 cd /app
-flask db migrate
-flask db upgrade
-flask run
+# flask db migrate
+# flask db upgrade
+flask run 

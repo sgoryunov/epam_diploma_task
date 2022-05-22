@@ -36,3 +36,10 @@ output "cluster_name" {
 output "db_endpoint" {
   value = resource.aws_db_instance.my_db.endpoint
 }
+
+output "vpc_id" {
+  value = module.vpc.vpc_id
+}
+output "db_subnet_group" {
+  value = module.vpc.database_subnet_group_name
+}
