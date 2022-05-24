@@ -5,7 +5,7 @@ aws eks --region $(terraform -chdir=IaC/ output -raw region) update-kubeconfig -
 terraform -chdir=IaC/ output -raw db_endpoint
 echo 'Saving infrastructure data --> Ok'
 # set database endpoint
-
+kubectl apply -f backend/rds_controller.yaml
 kubectl apply -f backend/secret.yaml
 kubectl apply -f backend/deployment.yaml
 kubectl apply -f backend/hpa.yaml
