@@ -65,7 +65,7 @@ resource "aws_security_group" "worker_group_mgmt_two" {
   }
 }
 
-resource "aws_security_group" "all_worker_mgmt" {
+resource "aws_security_group" "worker_group_mgmt_three" {
   name_prefix = "all_worker_management"
   vpc_id      = module.vpc.vpc_id
 
@@ -100,7 +100,14 @@ resource "aws_security_group" "all_worker_mgmt" {
   }
 }
 
+resource "aws_db_subnet_group" "education-vpc" {
+  name       = "education-vpc"
+  subnet_ids = module.vpc.private_subnets
 
+  tags = {
+    Name = "education-vpc"
+  }
+}
 resource "aws_db_instance" "my_db" {
   allocated_storage    = 10
   engine               = "mysql"
@@ -112,5 +119,5 @@ resource "aws_db_instance" "my_db" {
   parameter_group_name = "default.mysql5.7"
   skip_final_snapshot  = true
   identifier = "sgoryunov-db"
-  db_subnet_group_name = module.vpc.database_subnet_group_name
+  db_subnet_group_name = resource.aws_db_subnet_group.education-vpc.name
 }
