@@ -1,6 +1,6 @@
 #! /bin/bash
 # configure kubctl
-aws eks --region $(terraform -chdir=IaC/ output -raw region) update-kubeconfig --name $(terraform -chdir=IaC/ output -raw cluster_name)
+# aws eks --region $(terraform -chdir=IaC/ output -raw region) update-kubeconfig --name $(terraform -chdir=IaC/ output -raw cluster_name)
 # save infrastructure data
 terraform -chdir=IaC/ output -raw db_endpoint
 echo 'Saving infrastructure data --> Ok'
