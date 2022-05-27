@@ -4,3 +4,4 @@ frontend/.env
 __pycache__/
 .venv/
 version/*
+secret.txt

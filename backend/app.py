@@ -43,10 +43,10 @@ class itunes_data(db.Model):
 
 cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
 
-# @app.before_first_request
-# def init_db():
-#     app.logger.debug('A value for debugging')
-#     update_db()
+@app.before_first_request
+def init_db():
+    app.logger.debug('A value for debugging')
+    update_db()
 
 def update_db():
     url = 'https://itunes.apple.com/search?term=The+Beatles'

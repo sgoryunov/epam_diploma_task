@@ -1,0 +1,13 @@
+---
+- name: Terraform_init
+  hosts: localhost
+  gather_facts: false
+
+  vars_files:
+  -  variables.yml
+  tasks:
+
+  - name: Esure variables presented
+    template:
+      src: variables.tf.j2
+      dest: ./IaC/variables.tf

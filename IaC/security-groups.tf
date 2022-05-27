@@ -12,24 +12,57 @@ resource "aws_security_group" "worker_group_mgmt_one" {
       "10.0.0.0/8",
     ]
   }
-  ingress {
-    from_port = 80
-    to_port   = 80
-    protocol  = "tcp"
+#   ingress {
+#     from_port = 80
+#     to_port   = 80
+#     protocol  = "tcp"
 
-    cidr_blocks = [
-      "10.0.0.0/8",
-    ]
-  }
-  ingress {
-    from_port = 5000
-    to_port   = 5000
-    protocol  = "tcp"
+#     cidr_blocks = [
+#       "10.0.0.0/8",
+#     ]
+#   }
+#   ingress {
+#     from_port = 5000
+#     to_port   = 5000
+#     protocol  = "tcp"
 
-    cidr_blocks = [
-      "10.0.0.0/8",
-    ]
-  }
+#     cidr_blocks = [
+#       "10.0.0.0/8",
+#     ]
+#   }
+# }
+
+# resource "aws_security_group" "worker_group_mgmt_two" {
+#   name_prefix = "worker_group_mgmt_two"
+#   vpc_id      = module.vpc.vpc_id
+
+#   ingress {
+#     from_port = 22
+#     to_port   = 22
+#     protocol  = "tcp"
+
+#     cidr_blocks = [
+#       "192.168.0.0/16",
+#     ]
+#   }
+#   ingress {
+#     from_port = 80
+#     to_port   = 80
+#     protocol  = "tcp"
+
+#     cidr_blocks = [
+#       "10.0.0.0/8",
+#     ]
+#   }
+#   ingress {
+#     from_port = 5000
+#     to_port   = 5000
+#     protocol  = "tcp"
+
+#     cidr_blocks = [
+#       "10.0.0.0/8",
+#     ]
+#   }
 }
 
 resource "aws_security_group" "worker_group_mgmt_two" {
@@ -45,24 +78,24 @@ resource "aws_security_group" "worker_group_mgmt_two" {
       "192.168.0.0/16",
     ]
   }
-  ingress {
-    from_port = 80
-    to_port   = 80
-    protocol  = "tcp"
+  # ingress {
+  #   from_port = 80
+  #   to_port   = 80
+  #   protocol  = "tcp"
 
-    cidr_blocks = [
-      "10.0.0.0/8",
-    ]
-  }
-  ingress {
-    from_port = 5000
-    to_port   = 5000
-    protocol  = "tcp"
+  #   cidr_blocks = [
+  #     "10.0.0.0/8",
+  #   ]
+  # }
+  # ingress {
+  #   from_port = 5000
+  #   to_port   = 5000
+  #   protocol  = "tcp"
 
-    cidr_blocks = [
-      "10.0.0.0/8",
-    ]
-  }
+  #   cidr_blocks = [
+  #     "10.0.0.0/8",
+  #   ]
+  # }
 }
 
 resource "aws_security_group" "worker_group_mgmt_three" {
@@ -80,44 +113,22 @@ resource "aws_security_group" "worker_group_mgmt_three" {
       "192.168.0.0/16",
     ]
   }
-  ingress {
-    from_port = 80
-    to_port   = 80
-    protocol  = "tcp"
+  # ingress {
+  #   from_port = 80
+  #   to_port   = 80
+  #   protocol  = "tcp"
 
-    cidr_blocks = [
-      "10.0.0.0/8",
-    ]
-  }
-  ingress {
-    from_port = 5000
-    to_port   = 5000
-    protocol  = "tcp"
+  #   cidr_blocks = [
+  #     "10.0.0.0/8",
+  #   ]
+  # }
+  # ingress {
+  #   from_port = 5000
+  #   to_port   = 5000
+  #   protocol  = "tcp"
 
-    cidr_blocks = [
-      "10.0.0.0/8",
-    ]
-  }
-}
-
-resource "aws_db_subnet_group" "education-vpc" {
-  name       = "education-vpc"
-  subnet_ids = module.vpc.private_subnets
-
-  tags = {
-    Name = "education-vpc"
-  }
-}
-resource "aws_db_instance" "my_db" {
-  allocated_storage    = 10
-  engine               = "mysql"
-  engine_version       = "5.7"
-  instance_class       = "db.t3.micro"
-  db_name              = "mydatabase"
-  username             = "myuser"
-  password             = "mypassword"
-  parameter_group_name = "default.mysql5.7"
-  skip_final_snapshot  = true
-  identifier = "sgoryunov-db"
-  db_subnet_group_name = resource.aws_db_subnet_group.education-vpc.name
+  #   cidr_blocks = [
+  #     "10.0.0.0/8",
+  #   ]
+  # }
 }

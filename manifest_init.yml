@@ -1,0 +1,23 @@
+---
+- name: matifest_init
+  hosts: localhost
+  gather_facts: false
+
+  vars:
+    db_string: "mysql://{{ db_user }}:{{  db_user_pass }}@{{ db_ep }}/{{ db_name }}"
+  vars_files:
+  -  variables.yml
+
+  tasks:
+  - name: RDS init
+    template:
+      src: rds_controller.yaml.j2
+      dest: ./backend/rds_controller.yaml
+      
+
+  - name: Secret init
+    shell:
+      cmd: "kubectl create secret generic connection-string --from-literal=DATABASE_URL={{ db_string }} --dry-run=client -o yaml > ./backend/secret.yaml"
+  - name: debug
+    debug:
+      var: db_string
