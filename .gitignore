@@ -1,6 +1,4 @@
 .env
-backend/.env
-frontend/.env
 __pycache__/
 .venv/
 .terraform*
@@ -11,3 +9,4 @@ rds_controller.yaml
 secret.yaml
 terraform.tfstate.*
 variables.tf
+certificate.crt

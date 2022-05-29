@@ -19,11 +19,17 @@ ansible-playbook --vault-password-file secret.txt -e db_ep=${str%:*} manifest_in
 kubectl apply -f backend/rds_controller.yaml
 kubectl apply -f backend/secret.yaml
 echo 'Configure k8s resources --> Ok'
+# create aws load balancer controller 
+# install certifitate manager
+# kubectl apply \
+#     --validate=false \
+#     -f https://github.com/jetstack/cert-manager/releases/download/v1.5.4/cert-manager.yaml
+kubectl apply -f frontend/aws-load-balancer-controller-service-account.yaml
 helm repo add eks https://aws.github.io/eks-charts
 helm repo update
 helm install aws-load-balancer-controller eks/aws-load-balancer-controller \
   -n kube-system \
-  --set $(terraform -chdir=IaC/ output -raw cluster_name) \
+  --set clusterName=$(terraform -chdir=IaC/ output -raw cluster_name) \
   --set serviceAccount.create=false \
   --set serviceAccount.name=aws-load-balancer-controller 
 echo 'Create ALB controller --> Ok'
@@ -35,14 +41,5 @@ echo 'Start backend --> Ok'
 kubectl apply -f frontend/deployment.yaml
 kubectl apply -f frontend/hpa.yaml
 kubectl apply -f frontend/service.yaml
+kubectl apply -f frontend/ingress.yaml
 echo 'Start frontend --> Ok'
-
-# create aws load balancer controller 
-# kubectl apply -f frontend/aws-load-balancer-controller-service-account.yaml
-# install certifitate manager
-# kubectl apply \
-#     --validate=false \
-#     -f https://github.com/jetstack/cert-manager/releases/download/v1.5.4/cert-manager.yaml
-
-helm repo add eks https://aws.github.io/eks-charts
-helm repo update

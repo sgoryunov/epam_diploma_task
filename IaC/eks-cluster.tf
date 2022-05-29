@@ -36,7 +36,7 @@ resource "aws_iam_openid_connect_provider" "openid_connect_provider" {
     "sts.amazonaws.com",
   ]
 
-  thumbprint_list = []
+  thumbprint_list = ["9E99A48A9960B14926BB7F3B02E22DA2B0AB7280"]
 }
 data "aws_eks_cluster" "cluster" {
   name = module.eks.cluster_id
