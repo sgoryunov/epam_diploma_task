@@ -3,5 +3,11 @@ backend/.env
 frontend/.env
 __pycache__/
 .venv/
+.terraform*
 version/*
 secret.txt
+.DS_Store
+rds_controller.yaml
+secret.yaml
+terraform.tfstate.*
+variables.tf

@@ -29,6 +29,15 @@ module "eks" {
   ]
 }
 
+resource "aws_iam_openid_connect_provider" "openid_connect_provider" {
+  url = module.eks.cluster_oidc_issuer_url
+
+  client_id_list = [
+    "sts.amazonaws.com",
+  ]
+
+  thumbprint_list = []
+}
 data "aws_eks_cluster" "cluster" {
   name = module.eks.cluster_id
 }

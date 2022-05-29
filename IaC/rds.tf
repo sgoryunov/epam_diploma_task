@@ -22,7 +22,7 @@ resource "aws_db_subnet_group" "education-vpc" {
     Name = "education-vpc"
   }
 }
-resource "aws_db_instance" "my_db" {
+resource "aws_db_instance" "itunes-gr_db" {
   allocated_storage    = 10
   engine               = "mysql"
   engine_version       = "5.7"

@@ -8,6 +8,7 @@ metadata:
 spec:
   selector:
     app: itunes-gr-frontend
+  type: NodePort
   ports:
     - name      : app-listener
       protocol  : TCP

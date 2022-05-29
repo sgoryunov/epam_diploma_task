@@ -5,6 +5,8 @@
 
   vars:
     db_string: "mysql://{{ db_user }}:{{  db_user_pass }}@{{ db_ep }}/{{ db_name }}"
+    account_id: 548115872316
+    
   vars_files:
   -  variables.yml
 
@@ -14,6 +16,10 @@
       src: rds_controller.yaml.j2
       dest: ./backend/rds_controller.yaml
       
+  - name: ALB controller service account init
+    template:
+      src: ./frontend/aws-load-balancer-controller-service-account.yaml.j2
+      dest: ./frontend/aws-load-balancer-controller-service-account.yaml
 
   - name: Secret init
     shell:

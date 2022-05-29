@@ -8,6 +8,11 @@ output "cluster_endpoint" {
   value       = module.eks.cluster_endpoint
 }
 
+output "cluster_oidc_issuer_url" {
+  description = "Endpoint for EKS control plane."
+  value       = module.eks.cluster_oidc_issuer_url
+}
+
 output "cluster_security_group_id" {
   description = "Security group ids attached to the cluster control plane."
   value       = module.eks.cluster_security_group_id
@@ -34,7 +39,7 @@ output "cluster_name" {
 }
 
 output "db_endpoint" {
-  value = resource.aws_db_instance.my_db.endpoint
+  value = resource.aws_db_instance.itunes-gr_db.endpoint
 }
 
 output "vpc_id" {
@@ -42,4 +47,14 @@ output "vpc_id" {
 }
 output "db_subnet_group" {
   value = module.vpc.database_subnet_group_name
+}
+output "ecr_url" {
+  value = resource.aws_ecr_repository.itunes-gr-repo.repository_url
+}
+
+output "account_id" {
+  value = data.aws_caller_identity.current.account_id
+}
+output "end_OIDC_url" {
+  value = split("/",module.eks.cluster_oidc_issuer_url)[4]
 }

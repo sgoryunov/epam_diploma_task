@@ -3,22 +3,25 @@ kind: Ingress
 metadata:
   name: itunes-gr-frontend
   annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /$1
-    # cert-manager.io/cluster-issuer: "letsencrypt-prod"
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    # alb.ingress.kubernetes.io/scheme: intern
+    alb.ingress.kubernetes.io/target-type: instance annotation.
+    # alb.ingress.kubernetes.io/target-type: ip
+    kubernetes.io/ingress.class: alb
+    # alb.ingress.kubernetes.io/tags: e
 spec:
-  # ingressClassName: nginx
+  ingressClassName: alb
   # tls:
   # - hosts:
   #   - homeline.kg
   #   secretName: cbr-tls
   rules:
-  - host: nf-100-105.jinr.ru
-    http:
-      paths:
-      - pathType: Prefix
-        path: /
-        backend:
-          service:
-            name: itunes-gr-frontend
-            port:
-              number: 80
+    - http:
+        paths:
+        - pathType: Prefix
+          path: /app
+          backend:
+            service:
+              name: itunes-gr-frontend
+              port:
+                number: 80
