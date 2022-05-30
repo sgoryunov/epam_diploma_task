@@ -34,7 +34,7 @@ resource "aws_iam_role" "aws_lb_role" {
       {
             "Effect": "Allow",
             "Principal": {
-                "Federated": "arn:aws:iam::${data.aws_caller_identity.current.account_id}:oidc-provider/oidc.eks.region-code.amazonaws.com/id/${local.some_id}"
+                "Federated": "arn:aws:iam::${data.aws_caller_identity.current.account_id}:oidc-provider/oidc.eks.${var.region}.amazonaws.com/id/${local.some_id}"
             },
             "Action": "sts:AssumeRoleWithWebIdentity",
             "Condition": {
