@@ -5,21 +5,16 @@ metadata:
   annotations:
     alb.ingress.kubernetes.io/scheme: internet-facing
     # alb.ingress.kubernetes.io/scheme: intern
-    alb.ingress.kubernetes.io/target-type: instance annotation.
+    alb.ingress.kubernetes.io/target-type: instance
     # alb.ingress.kubernetes.io/target-type: ip
-    # kubernetes.io/ingress.class: alb
-    # alb.ingress.kubernetes.io/tags: e
+    kubernetes.io/ingress.class: alb
+    # alb.ingress.kubernetes.io/tags: education_eks
 spec:
-  ingressClassName: alb
-  # tls:
-  # - hosts:
-  #   - homeline.kg
-  #   secretName: cbr-tls
   rules:
     - http:
         paths:
         - pathType: Prefix
-          path: /app
+          path: /
           backend:
             service:
               name: itunes-gr-frontend

@@ -13,17 +13,9 @@ resource "aws_iam_policy" "lb_policy" {
   policy = "${file("iam_policy.json")}"
 }
 
-resource "aws_iam_policy" "lb_policy_additional" {
-  name        = "AWSLoadBalancerControllerAdditionalIAMPolicy"
-  path        = "/"
-  description = "Policy fo load balancer"
-
-  policy = "${file("iam_policy_v1_to_v2_additional.json")}"
-}
-
-resource "aws_iam_role_policy_attachment" "lb_additional_pol_att" {
+resource "aws_iam_role_policy_attachment" "lb_role_pol_att" {
   role = resource.aws_iam_role.aws_lb_role.name
-  policy_arn = resource.aws_iam_policy.lb_policy_additional.arn
+  policy_arn = resource.aws_iam_policy.lb_policy.arn
 }
 
 resource "aws_iam_role" "aws_lb_role" {
