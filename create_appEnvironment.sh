@@ -19,6 +19,8 @@
 # kubectl apply -f backend/rds_controller.yaml
 # kubectl apply -f backend/secret.yaml
 # echo 'Configure k8s resources --> Ok'
+
+
 # create aws load balancer controller 
 # install certifitate manager
 # kubectl apply \
@@ -33,6 +35,11 @@
 #   --set serviceAccount.create=false \
 #   --set serviceAccount.name=aws-load-balancer-controller 
 # echo 'Create ALB controller --> Ok'
+
+# creat nginx ingress controller
+kubectl apply -f k8s/nginx-controller.yaml
+kubectl apply -f k8s/cert-manager.crds.yaml
+
 # start app
 kubectl apply -f backend/deployment.yaml
 kubectl apply -f backend/hpa.yaml
