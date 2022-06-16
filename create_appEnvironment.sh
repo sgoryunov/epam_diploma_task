@@ -1,24 +1,24 @@
 #! /bin/bash
-# set -e
-# # init terraform by secrets
-# ansible-playbook --vault-password-file secret.txt terraform_init.yml 
-# echo 'Terraform files init --> Ok'
+set -e
+# init terraform by secrets
+ansible-playbook --vault-password-file secret.txt terraform_init.yml 
+echo 'Terraform files init --> Ok'
 
-# # start terraform 
-# # terraform -chdir=IaC init
-# terraform -chdir=IaC apply 
-# echo 'Create infrastructure --> Ok'
+# start terraform 
+# terraform -chdir=IaC init
+terraform -chdir=IaC apply 
+echo 'Create infrastructure --> Ok'
 
-# # configure kubctl
-# aws eks --region $(terraform -chdir=IaC/ output -raw region) update-kubeconfig --name $(terraform -chdir=IaC/ output -raw cluster_name)
-# echo 'Configure kubectl --> Ok'
+# configure kubctl
+aws eks --region $(terraform -chdir=IaC/ output -raw region) update-kubeconfig --name $(terraform -chdir=IaC/ output -raw cluster_name)
+echo 'Configure kubectl --> Ok'
 
-# # init secrets, Jenkins, Prometheus, Sonarqube.
-# str=$(terraform -chdir=IaC/ output -raw db_endpoint)
-# ansible-playbook --vault-password-file secret.txt -e db_ep=${str%:*} manifest_init.yml
-# kubectl apply -f backend/rds_controller.yaml
-# kubectl apply -f backend/secret.yaml
-# echo 'Configure k8s resources --> Ok'
+# init secrets, Jenkins, Prometheus, Sonarqube.
+str=$(terraform -chdir=IaC/ output -raw db_endpoint)
+ansible-playbook --vault-password-file secret.txt -e db_ep=${str%:*} manifest_init.yml
+kubectl apply -f backend/rds_controller.yaml
+kubectl apply -f backend/secret.yaml
+echo 'Configure k8s resources --> Ok'
 
 
 # create aws load balancer controller 
@@ -36,9 +36,12 @@
 #   --set serviceAccount.name=aws-load-balancer-controller 
 # echo 'Create ALB controller --> Ok'
 
-# creat nginx ingress controller
-kubectl apply -f k8s/nginx-controller.yaml
-kubectl apply -f k8s/cert-manager.crds.yaml
+# create nginx ingress controller
+kubectl apply -f k8s/deploy.yaml
+# kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/nginx-0.26.1/deploy/static/mandatory.yaml
+# create cert manager
+kubectl create namespace cert-manager
+kubectl apply --validate=false -f https://github.com/jetstack/cert-manager/releases/download/v0.12.0/cert-manager.yaml
 
 # start app
 kubectl apply -f backend/deployment.yaml
