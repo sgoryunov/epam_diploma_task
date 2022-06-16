@@ -37,8 +37,7 @@ echo 'Configure k8s resources --> Ok'
 # echo 'Create ALB controller --> Ok'
 
 # create nginx ingress controller
-kubectl apply -f k8s/deploy.yaml
-# kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/nginx-0.26.1/deploy/static/mandatory.yaml
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.2.0/deploy/static/provider/aws/deploy.yaml
 # create cert manager
 kubectl create namespace cert-manager
 kubectl apply --validate=false -f https://github.com/jetstack/cert-manager/releases/download/v0.12.0/cert-manager.yaml
