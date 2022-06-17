@@ -10,3 +10,4 @@ secret.yaml
 terraform.tfstate.*
 variables.tf
 certificate.crt
+*.tfstate
