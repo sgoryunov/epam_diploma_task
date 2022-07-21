@@ -42,6 +42,13 @@ provider "kubernetes" {
   cluster_ca_certificate = base64decode(data.aws_eks_cluster.cluster.certificate_authority.0.data)
 }
 
+data "aws_eks_cluster" "cluster" {
+  name = module.eks.cluster_id
+}
+
+data "aws_eks_cluster_auth" "cluster" {
+  name = module.eks.cluster_id
+}
 provider "aws" {
   region = var.region
 }
@@ -84,6 +91,11 @@ data "aws_security_groups" "sg-two" {
 #     "Number" = "three"
 #   }
 # }
+data "aws_security_groups" "sg-efs" {
+  tags = {
+    "Name" = "epam-edu"
+  }
+}
 data "aws_route53_zone" "selected" {
   name         = "itunes-gr.ru."
   private_zone = false
@@ -109,14 +121,14 @@ module "eks" {
       name                          = "worker-group-1"
       instance_type                 = "t3.small"
       additional_userdata           = "echo foo bar"
-      additional_security_group_ids = data.aws_security_groups.sg-one.ids
+      additional_security_group_ids = [data.aws_security_groups.sg-one.ids,data.aws_security_groups.sg-efs.ids]
       asg_desired_capacity          = 2
     },
     {
       name                          = "worker-group-2"
       instance_type                 = "t3.medium"
       additional_userdata           = "echo foo bar"
-      additional_security_group_ids = data.aws_security_groups.sg-two.ids
+      additional_security_group_ids = [data.aws_security_groups.sg-two.ids,data.aws_security_groups.sg-efs.ids]
       asg_desired_capacity          = 1
     },
   ]
@@ -143,7 +155,7 @@ module "eks" {
 #===========rds=================
 resource "aws_security_group" "rds_security_group" {
   name_prefix = "rds_security_group"
-  vpc_id      = module.vpc.vpc_id
+  vpc_id      = var.vpc_id
 
   ingress {
     from_port = 3306
@@ -159,7 +171,7 @@ resource "aws_security_group" "rds_security_group" {
 }
 resource "aws_db_subnet_group" "education-vpc" {
   name       = "education-vpc"
-  subnet_ids = module.vpc.private_subnets
+  subnet_ids = data.aws_subnet_ids.private.ids
 
   tags = {
     Name = "education-vpc"

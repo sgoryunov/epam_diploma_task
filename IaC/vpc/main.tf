@@ -95,6 +95,15 @@ resource "aws_security_group" "worker_group_mgmt_one" {
       "10.0.0.0/8",
     ]
   }
+  egress {
+    from_port = 2049
+    to_port   = 2049
+    protocol  = "tcp"
+
+    cidr_blocks = [
+      "10.0.0.0/8",
+    ]
+  }
   tags = {
     "Number" = "one"
   }
@@ -113,6 +122,16 @@ resource "aws_security_group" "worker_group_mgmt_two" {
       "192.168.0.0/16",
     ]
   }
+  egress {
+    from_port = 2049
+    to_port   = 2049
+    protocol  = "tcp"
+
+    cidr_blocks = [
+      "192.168.0.0/16",
+      "10.0.0.0/16"
+    ]
+  }
   tags = {
     "Number" = "two"
   }
@@ -125,6 +144,17 @@ resource "aws_security_group" "worker_group_mgmt_three" {
   ingress {
     from_port = 22
     to_port   = 22
+    protocol  = "tcp"
+
+    cidr_blocks = [
+      "10.0.0.0/8",
+      "172.16.0.0/12",
+      "192.168.0.0/16",
+    ]
+  }
+  ingress {
+    from_port = 2049
+    to_port   = 2049
     protocol  = "tcp"
 
     cidr_blocks = [
@@ -152,6 +182,11 @@ module "efs" {
                                protocol    = "tcp"
                                to_port     = 2049
                                self        = true
+                              #  cidr_blocks = [
+                                #   "10.0.0.0/8",
+                                #   "172.16.0.0/12",
+                                #   "192.168.0.0/16",
+                                # ]
                                cidr_blocks = null
                              },
                              ssh = {

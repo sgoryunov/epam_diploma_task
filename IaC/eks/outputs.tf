@@ -45,9 +45,9 @@ output "db_endpoint" {
 # output "vpc_id" {
 #   value = module.vpc.vpc_id
 # }
-output "db_subnet_group" {
-  value = module.vpc.database_subnet_group_name
-}
+# output "db_subnet_group" {
+#   value = module.vpc.database_subnet_group_name
+# }
 output "ecr_url" {
   value = resource.aws_ecr_repository.itunes-gr-repo.repository_url
 }

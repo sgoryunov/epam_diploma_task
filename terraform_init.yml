@@ -10,4 +10,4 @@
   - name: Esure variables presented
     template:
       src: variables.tf.j2
-      dest: ./IaC/variables.tf
+      dest: ./IaC/eks/variables.tf

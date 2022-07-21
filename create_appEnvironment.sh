@@ -1,20 +1,25 @@
 #! /bin/bash
 set -e
+# create vpc 
+# terraform -chdir=IaC init
+# terraform -chdir=IaC/vpc apply
+
 # init terraform by secrets
 ansible-playbook --vault-password-file secret.txt terraform_init.yml 
 echo 'Terraform files init --> Ok'
 
 # start terraform 
 # terraform -chdir=IaC init
-terraform -chdir=IaC apply 
+terraform -chdir=IaC/eks apply -var="vpc_id=$(terraform -chdir=IaC/vpc output -raw vpc_id)"
+# terraform -chdir=IaC/eks apply 
 echo 'Create infrastructure --> Ok'
 
 # configure kubctl
-aws eks --region $(terraform -chdir=IaC/ output -raw region) update-kubeconfig --name $(terraform -chdir=IaC/ output -raw cluster_name)
+aws eks --region $(terraform -chdir=IaC/eks/ output -raw region) update-kubeconfig --name $(terraform -chdir=IaC/eks/ output -raw cluster_name)
 echo 'Configure kubectl --> Ok'
 
 # init secrets, Jenkins, Prometheus, Sonarqube.
-str=$(terraform -chdir=IaC/ output -raw db_endpoint)
+str=$(terraform -chdir=IaC/eks output -raw db_endpoint)
 ansible-playbook --vault-password-file secret.txt -e db_ep=${str%:*} manifest_init.yml
 kubectl apply -f backend/rds_controller.yaml
 kubectl apply -f backend/secret.yaml

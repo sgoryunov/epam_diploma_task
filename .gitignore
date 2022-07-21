@@ -9,5 +9,6 @@ rds_controller.yaml
 secret.yaml
 terraform.tfstate.*
 IaC/eks-old/variables.tf
+IaC/eks/variables.tf
 certificate.crt
 *.tfstate
