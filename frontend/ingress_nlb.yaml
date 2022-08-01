@@ -24,21 +24,22 @@ metadata:
     nginx.ingress.kubernetes.io/ssl-redirect: "true"
     nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
     # projectcontour.io/response-timeout: infinity
-    nginx.ingress.kubernetes.io/rewrite-target: /$2
+    # nginx.ingress.kubernetes.io/rewrite-target: /$2
     # nginx.ingress.kubernetes.io/app-root: /prod
-    nginx.ingress.kubernetes.io/use-regex: "true"
+    # nginx.ingress.kubernetes.io/use-regex: "true"
 
 spec:
-  ingressClassName: nginx
+  # ingressClassName: nginx
   tls:
   - hosts:
-    - itunes-gr.ru
+    - prod.itunes-gr.ru
     secretName: tls-secret
   rules:
-    - host: itunes-gr.ru
+    - host: prod.itunes-gr.ru
       http:
         paths:
-        - path: /prod(/|$)(.*)
+        # - path: /prod(/|$)(.*)
+        - path: /
           pathType: Prefix
           backend:
             service:

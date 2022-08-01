@@ -13,13 +13,17 @@ set -e
 kubectl apply -k "github.com/kubernetes-sigs/aws-efs-csi-driver/deploy/kubernetes/overlays/stable/?ref=master"
 #Setup a namespace
 kubectl create ns jenkins
-
 kubectl get storageclass
-
 # create volume
 kubectl apply -f ./k8s/jenkins/aws/jenkins.pv.yaml 
 kubectl get pv
-
 # create volume claim
 kubectl apply -n jenkins -f ./k8s/jenkins/aws/jenkins.pvc.yaml
 kubectl -n jenkins get pvc
+### Deploy Jenkins
+# rbac
+kubectl apply -n jenkins -f ./k8s/jenkins/aws/jenkins.rbac.yaml 
+kubectl apply -n jenkins -f ./k8s/jenkins/aws/jenkins.deployment.yaml
+kubectl -n jenkins get pods
+### Expose a service for agents
+kubectl apply -n jenkins -f ./k8s/jenkins/aws/jenkins.service.yaml 

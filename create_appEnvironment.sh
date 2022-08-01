@@ -20,7 +20,8 @@ echo 'Configure kubectl --> Ok'
 
 # init secrets, Jenkins, Prometheus, Sonarqube.
 str=$(terraform -chdir=IaC/eks output -raw db_endpoint)
-ansible-playbook --vault-password-file secret.txt -e db_ep=${str%:*} manifest_init.yml
+ansible-playbook --vault-password-file secret.txt -e db_ep=${str%:*} \
+                 -e efs_id=$(terraform -chdir=IaC/vpc output -raw efs_id) manifest_init.yml
 kubectl apply -f backend/rds_controller.yaml
 kubectl apply -f backend/secret.yaml
 echo 'Configure k8s resources --> Ok'
@@ -64,3 +65,23 @@ kubectl apply -f frontend/hpa.yaml
 kubectl apply -f frontend/service.yaml
 kubectl apply -f frontend/ingress_nlb.yaml
 echo 'Start frontend --> Ok'
+
+#===-jenkins deploy-======
+# deploy EFS storage driver
+kubectl apply -k "github.com/kubernetes-sigs/aws-efs-csi-driver/deploy/kubernetes/overlays/stable/?ref=master"
+#Setup a namespace
+kubectl create ns jenkins
+kubectl get storageclass
+# create volume
+kubectl apply -f ./k8s/jenkins/aws/jenkins.pv.yaml 
+kubectl get pv
+# create volume claim
+kubectl apply -n jenkins -f ./k8s/jenkins/aws/jenkins.pvc.yaml
+kubectl -n jenkins get pvc
+### Deploy Jenkins
+# rbac
+kubectl apply -n jenkins -f ./k8s/jenkins/aws/jenkins.rbac.yaml 
+kubectl apply -n jenkins -f ./k8s/jenkins/aws/jenkins.deployment.yaml
+kubectl -n jenkins get pods
+### Expose a service for agents
+kubectl apply -n jenkins -f ./k8s/jenkins/aws/jenkins.service.yaml 

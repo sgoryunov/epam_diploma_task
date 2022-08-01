@@ -27,4 +27,11 @@
   - name: debug
     debug:
       var: db_string
+  - name: Jenkins PV init
+    lineinfile:
+      path: ./k8s/jenkins/aws/jenkins.pv.yaml
+      regexp: '(.*)(volumeHandle:)'
+      line: '\1\2 {{ efs_id }}'
+      backrefs: yes
+      
       
