@@ -61,8 +61,9 @@ kubectl apply -f backend/hpa.yaml
 kubectl apply -f backend/service.yaml
 echo 'Start backend --> Ok'
 kubectl apply -f frontend/deployment.yaml
-kubectl apply -f frontend/hpa.yaml
+kubectl apply -f frontend/hpa.yaml  
 kubectl apply -f frontend/service.yaml
+sleep 30s
 kubectl apply -f frontend/ingress_nlb.yaml
 echo 'Start frontend --> Ok'
 

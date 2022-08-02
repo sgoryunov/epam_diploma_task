@@ -123,6 +123,7 @@ module "eks" {
       additional_userdata           = "echo foo bar"
       additional_security_group_ids = [data.aws_security_groups.sg-one.ids,data.aws_security_groups.sg-efs.ids]
       asg_desired_capacity          = 2
+      key_name                      = "service"
     },
     {
       name                          = "worker-group-2"
@@ -130,6 +131,7 @@ module "eks" {
       additional_userdata           = "echo foo bar"
       additional_security_group_ids = [data.aws_security_groups.sg-two.ids,data.aws_security_groups.sg-efs.ids]
       asg_desired_capacity          = 1
+      key_name                      = "service"
     },
   ]
 }

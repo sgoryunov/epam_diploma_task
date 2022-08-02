@@ -13,7 +13,7 @@ set -e
 kubectl apply -k "github.com/kubernetes-sigs/aws-efs-csi-driver/deploy/kubernetes/overlays/stable/?ref=master"
 #Setup a namespace
 kubectl create ns jenkins
-kubectl get storageclass
+# kubectl get storageclass
 # create volume
 kubectl apply -f ./k8s/jenkins/aws/jenkins.pv.yaml 
 kubectl get pv
